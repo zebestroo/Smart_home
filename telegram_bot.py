@@ -2,10 +2,9 @@ import telebot
 import datetime
 import requests
 from telebot import types # для указание типов
+from config import TOKEN, ADMINS, COMMAND_1_URL
 
-admins = [xxxxxxxxx, xxxxxxxxx, xxxxxxxxx, xxxxxxxxx] # Your admins telegram id's 
-token = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' # Token for tg Bot
-bot = telebot.TeleBot(token)
+bot = telebot.TeleBot(TOKEN)
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -17,7 +16,7 @@ def start(message):
     
 @bot.message_handler(content_types=['text'])
 def func(message):
-    if(message.from_user.id in admins):
+    if(message.from_user.id in ADMINS):
         if(message.text == "❓ Узнать статус"):
             with open('logs.txt', 'r') as file:
                 logs = file.read()
@@ -32,7 +31,7 @@ def func(message):
             bot.send_message(message.chat.id, text="Что будем делать?", reply_markup=markup)
         
         elif(message.text == "Полить теплицу"):
-            r = requests.get(url = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+            r = requests.get(url = COMMAND_1_URL)
             if r:
                 dt_now = datetime.datetime.now()
                 dt_string = dt_now.strftime('%H:%M %d.%m.%Y')
